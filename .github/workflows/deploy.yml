@@ -1,0 +1,17 @@
+name: Deploy Next.js App
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build
+        run: |
+          export TURBO_TEAM=${{ secrets.TURBO_TEAM }} TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}
+          pnpm i --frozen-lockfile
+          npx turbo build
