@@ -13,5 +13,5 @@ jobs:
       - name: Build
         run: |
           export TURBO_TEAM=${{ secrets.TURBO_TEAM }} TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}
-          pnpm i --frozen-lockfile
+          corepack enable && pnpm i --frozen-lockfile
           npx turbo build
