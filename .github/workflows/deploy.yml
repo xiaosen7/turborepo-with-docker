@@ -8,6 +8,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
+  TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+  TURBO_TOKEN: ${{ secrets.TURBO_TEAM }}
 
   
 jobs:
@@ -18,7 +20,6 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build
         run: |
-          export TURBO_TEAM=${{ secrets.TURBO_TEAM }} TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}
           corepack enable && pnpm i --frozen-lockfile
           npx turbo build
           
@@ -39,4 +40,6 @@ jobs:
           cache-to: type=inline
           context: .
           file: apps/api/Dockerfile
+          build-args: TURBO_TEAM,TURBO_TOKEN
+            
           
