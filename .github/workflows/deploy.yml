@@ -42,6 +42,7 @@ jobs:
         run: |
           echo ${{ secrets.PAT }} | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
       - name: Build and push for api
+        id: docker_build_api
         uses: docker/build-push-action@v6
         env: 
           IMAGE_NAME: ${{ env.REGISTRY }}/${{ github.actor }}/turbo-with-docker-api:latest
@@ -54,8 +55,11 @@ jobs:
           context: .
           file: ${{ env.FILE }}
           build-args: TURBO_TEAM,TURBO_TOKEN
-
+      - run: |
+          echo "Docker Image ID: ${{ steps.docker_build_api.outputs.imageid }}"
+          
       - name: Build and push for web
+        id: docker_build_web
         uses: docker/build-push-action@v6
         env: 
           IMAGE_NAME: ${{ env.REGISTRY }}/${{ github.actor }}/turbo-with-docker-web:latest
@@ -68,5 +72,7 @@ jobs:
           context: .
           file: ${{ env.FILE }}
           build-args: TURBO_TEAM,TURBO_TOKEN
+      - run: |
+          echo "Docker Image ID: ${{ steps.docker_build_web.outputs.imageid }}"
             
           
