@@ -36,6 +36,8 @@ jobs:
           build-args: TURBO_TEAM,TURBO_TOKEN
       - run: |
           echo "Docker Image ID: ${{ steps.docker_build_api.outputs.imageid }}"
+          echo "Docker Image digest: ${{ steps.docker_build_api.outputs.digest }}"
+          echo "Docker Image metadata: ${{ steps.docker_build_api.outputs.metadata }}"
           
       - name: Build and push for web
         id: docker_build_web
@@ -53,5 +55,7 @@ jobs:
           build-args: TURBO_TEAM,TURBO_TOKEN
       - run: |
           echo "Docker Image ID: ${{ steps.docker_build_web.outputs.imageid }}"
+          echo "Docker Image digest: ${{ steps.docker_build_web.outputs.digest }}"
+          echo "Docker Image metadata: ${{ steps.docker_build_web.outputs.metadata }}"
             
           
