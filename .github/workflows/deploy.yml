@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - main
+
+
+env:
+  REGISTRY: ghcr.io
+
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,3 +21,22 @@ jobs:
           export TURBO_TEAM=${{ secrets.TURBO_TEAM }} TURBO_TOKEN=${{ secrets.TURBO_TOKEN }}
           corepack enable && pnpm i --frozen-lockfile
           npx turbo build
+          
+  build-docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Login Registry
+        run: |
+          echo ${{ secrets.PAT }} | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          tags: ${{ github.actor }}/turbo-with-docker-api:latest
+          cache-from: type=registry,ref=${{ github.actor }}/turbo-with-docker-api:latest
+          cache-to: type=inline
+          context: .
+          file: apps/api/Dockerfile
+          
