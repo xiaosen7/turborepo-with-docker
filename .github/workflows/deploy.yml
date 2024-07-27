@@ -20,6 +20,7 @@ jobs:
       - name: Login Registry
         run: |
           echo ${{ secrets.PAT }} | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
+          
       - name: Build and push for api
         id: docker_build_api
         uses: docker/build-push-action@v6
